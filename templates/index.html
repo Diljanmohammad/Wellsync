@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WellSync turns lifestyle survey patterns into clear wellbeing insights.">
+  <title>WellSync — Lifestyle & Wellbeing Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="nav shell">
+    <a class="brand" href="/"><i>W</i>WellSync</a>
+    <div><span>DATASET · {{ '{:,}'.format(summary.respondents) }} RESPONDENTS</span><a href="#assessment">Check your balance ↘</a></div>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div>
+        <p class="eyebrow">LIFESTYLE & WELLBEING INTELLIGENCE</p>
+        <h1>Small habits.<br><em>Measurable balance.</em></h1>
+        <p class="hero-text">Explore how sleep, movement, connection and recovery relate to self-reported stress and work–life balance.</p>
+        <a class="primary" href="#assessment">Run your assessment <b>→</b></a>
+      </div>
+      <div class="pulse-card">
+        <div class="pulse-head"><span>POPULATION SNAPSHOT</span><b>LIVE MODEL</b></div>
+        <div class="orb"><i></i><strong>{{ summary.average_wellbeing }}</strong><span>AVG. BALANCE SCORE</span></div>
+        <div class="mini-stats"><div><span>AVG SLEEP</span><strong>{{ summary.average_sleep }}h</strong></div><div><span>AVG STRESS</span><strong>{{ summary.average_stress }}/5</strong></div><div><span>STEP SCORE</span><strong>{{ summary.average_steps_score }}/10</strong></div></div>
+      </div>
+    </section>
+
+    <section class="metric-strip"><div class="shell"><span><b>{{ '{:,}'.format(summary.respondents) }}</b> cleaned records</span><span><b>24</b> survey variables</span><span><b>4</b> hypotheses explored</span><span><b>2</b> regression targets</span></div></section>
+
+    <section class="story shell">
+      <div class="section-head"><div><p class="eyebrow">DATA STORY</p><h2>What the analysis measures</h2></div><p>WellSync preserves the project's original ETL, hypothesis analysis and interpretable modelling approach.</p></div>
+      <div class="story-grid"><article><b>01</b><h3>Daily foundations</h3><p>Sleep, movement, nutrition and meditation describe the routines supporting wellbeing.</p></article><article><b>02</b><h3>Social connection</h3><p>Core circle, social network and helping others capture important relationship signals.</p></article><article><b>03</b><h3>Recovery pressure</h3><p>Lost vacation and daily shouting provide indicators of overwork and stress response.</p></article><article><b>04</b><h3>Personal fulfilment</h3><p>Flow, achievements, life vision and time for passion reflect purpose and progress.</p></article></div>
+    </section>
+
+    <section id="assessment" class="assessment shell">
+      <div class="section-head"><div><p class="eyebrow">PERSONAL ESTIMATOR</p><h2>Map your current routine</h2></div><p>Use the same variable scales as the original survey. Results are educational estimates, not medical advice.</p></div>
+      <form id="form" class="form-card">
+        <div class="form-block"><header><b>01</b><span>FOUNDATIONS</span></header><div class="fields">
+          <label>Sleep hours <span>1–10</span><input name="sleep_hours" type="number" min="1" max="10" step="1" value="7"></label>
+          <label>Daily steps score <span>1–10</span><input name="daily_steps" type="number" min="1" max="10" value="6"></label>
+          <label>Fruit & vegetables <span>0–5</span><input name="fruits_veggies" type="number" min="0" max="5" value="3"></label>
+          <label>Weekly meditation <span>0–10</span><input name="weekly_meditation" type="number" min="0" max="10" value="5"></label>
+        </div></div>
+        <div class="form-block"><header><b>02</b><span>CONNECTION & PURPOSE</span></header><div class="fields">
+          <label>Social network <span>0–10</span><input name="social_network" type="number" min="0" max="10" value="6"></label>
+          <label>Core circle <span>0–10</span><input name="core_circle" type="number" min="0" max="10" value="6"></label>
+          <label>Helping others <span>0–10</span><input name="supporting_others" type="number" min="0" max="10" value="5"></label>
+          <label>Places visited <span>0–10</span><input name="places_visited" type="number" min="0" max="10" value="5"></label>
+          <label>Achievement <span>0–10</span><input name="achievement" type="number" min="0" max="10" value="5"></label>
+          <label>Tasks completed <span>0–10</span><input name="todo_completed" type="number" min="0" max="10" value="6"></label>
+          <label>Flow experiences <span>0–10</span><input name="flow" type="number" min="0" max="10" value="4"></label>
+          <label>Life vision <span>0–10</span><input name="live_vision" type="number" min="0" max="10" value="5"></label>
+          <label>Time for passion <span>0–10</span><input name="time_for_passion" type="number" min="0" max="10" value="4"></label>
+        </div></div>
+        <div class="form-block"><header><b>03</b><span>PRESSURE & RESOURCES</span></header><div class="fields">
+          <label>Lost vacation days <span>0–10</span><input name="lost_vacation" type="number" min="0" max="10" value="3"></label>
+          <label>Daily shouting <span>0–10</span><input name="daily_shouting" type="number" min="0" max="10" value="2"></label>
+          <label>Sufficient income <span>1=no, 2=yes</span><input name="sufficient_income" type="number" min="1" max="2" value="2"></label>
+        </div></div>
+        <button id="submit" class="primary" type="submit">Generate WellSync report <b>→</b></button><p id="error" class="error"></p>
+      </form>
+
+      <section id="result" class="result hidden">
+        <div class="result-main"><div><p class="eyebrow">ESTIMATED STRESS</p><strong id="stress-score">0.00</strong><span>/ 5</span><h3 id="stress-band">—</h3></div><div class="balance-ring"><i id="ring"></i><strong id="wellbeing-score">0</strong><span>BALANCE SCORE</span></div></div>
+        <div class="result-grid"><article><h3>Action plan</h3><div id="recommendations"></div></article><article><h3>How to read this</h3><p>Your estimate is generated from associations in an anonymised, cross-sectional lifestyle survey. It cannot establish causation or diagnose a health condition.</p><div class="percentile"><span>RELATIVE BALANCE POSITION</span><i><b id="percentile-bar"></b></i><strong id="percentile">0%</strong></div></article></div>
+      </section>
+    </section>
+  </main>
+  <footer class="shell"><a class="brand" href="/"><i>W</i>WellSync</a><p>Patterns for reflection—not prescriptions.</p></footer>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
